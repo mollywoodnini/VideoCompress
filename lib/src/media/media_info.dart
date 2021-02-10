@@ -13,7 +13,7 @@ class MediaInfo {
 
   /// bytes
   int filesize; // filesize
-  /// microsecond
+  /// milliseconds
   double duration;
   bool isCancel;
   File file;
@@ -35,10 +35,11 @@ class MediaInfo {
     path = json['path'];
     title = json['title'];
     author = json['author'];
-    width = json['width'];
-    height = json['height'];
-    orientation = json['orientation'];
-    filesize = json['filesize'];
+
+    width = _toInt(json['width']);
+    height = _toInt(json['height']);
+    orientation = _toInt(json['orientation']);
+    filesize = _toInt(json['filesize']);
     duration = double.tryParse('${json['duration']}');
     isCancel = json['isCancel'];
     file = File(path);
@@ -61,5 +62,14 @@ class MediaInfo {
     }
     data['file'] = File(path).toString();
     return data;
+  }
+
+  int _toInt(dynamic value) {
+    final valueAsString = value.toString();
+    if (valueAsString.contains(".")) {
+      return int.parse(valueAsString.split(".").first);
+    } else {
+      return int.parse(valueAsString);
+    }
   }
 }
